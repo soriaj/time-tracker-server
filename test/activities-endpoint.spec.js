@@ -22,7 +22,7 @@ describe('Activities Endpoints', () => {
 
    before('cleanup', () => helpers.cleanTables(db))
 
-   afterEach('clenup', () => helpers.cleanTables)
+   afterEach('clenup', () => helpers.cleanTables(db))
 
    describe.only('GET /api/activities', () => {
       context('Given no activities', () => {
