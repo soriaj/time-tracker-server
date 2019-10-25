@@ -1,0 +1,1 @@
+TRUNCATE activities_users, activities RESTART IDENTITY CASCADE;
