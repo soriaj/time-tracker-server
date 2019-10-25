@@ -36,91 +36,83 @@ function makeUsersArray() {
 function makeActivitiesArray(users) {
    return [
       {
-         id: 1,
+         id: 'bf4fa1f4-2ef0-4bf1-a6cd-45b985d7d5c9',
          summary: "Activty 1",
          company: "eCorp",
          customer_name: "Mr. Robot",
          description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non. Adipisci, pariatur. Molestiae, libero esse hic adipisci autem neque?",
          date: new Date('2029-01-22T16:28:32.615Z'),
-         author_id: 1
+         author_id: users[0].id
       },
       {
-         id: 2,
+         id: 'aa6d33a9-8641-4986-b95b-6fd966331610',
          summary: "Activty 2",
          company: "Awesome Deals",
          customer_name: "Jane Doe",
          description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum, exercitationem cupiditate dignissimos est perspiciatis, nobis commodi alias saepe atque facilis labore sequi deleniti. Sint, adipisci facere! Velit temporibus debitis rerum.",
          date: new Date('2029-01-22T16:28:32.615Z'),
-         author_id: 2
+         author_id: users[1].id
       },
       {
-         id: 3,
+         id: 'f3c2b711-eef2-4125-a018-ecc03dc1dc72',
          summary: "Activty 3",
          company: "Energy Inc.",
          customer_name: "John Energy",
          description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus, voluptate? Necessitatibus, reiciendis? Cupiditate totam laborum esse animi ratione ipsa dignissimos laboriosam eos similique cumque. Est nostrum esse porro id quaerat.",
          date: new Date('2029-01-22T16:28:32.615Z'),
-         author_id: 3
+         author_id: users[2].id
       },
       {
-         id: 4,
+         id: '0266c729-0449-4dd7-80db-3e899b5c5cde',
          summary: "Activty 4",
          company: "eCorp",
          customer_name: "Mr. Robot",
          description: "Bacon ipsum dolor amet doner shank beef t-bone brisket meatloaf pork loin ham hock chuck ball tip tri-tip pastrami pork chop. Buffalo venison bresaola, cow ground round brisket meatloaf tail cupim kielbasa turducken.",
          date: new Date('2029-01-22T16:28:32.615Z'),
-         author_id: 1
-      },
-      {
-         id: 5,
-         summary: "Activty 5",
-         company: "eCorp",
-         customer_name: "Victor",
-         description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non. Adipisci, pariatur. Molestiae, libero esse hic adipisci autem neque?",
-         date: new Date('2029-01-22T16:28:32.615Z'),
-         author_id: 2
-      },
-      {
-         id: 6,
-         summary: "Activty 6",
-         company: "Awesome Deals",
-         customer_name: "Jane Doe",
-         description: "Beef ribs alcatra ground round prosciutto landjaeger strip steak leberkas doner spare ribs andouille filet mignon venison ham hock ham ball tip. T-bone buffalo boudin shankle short loin picanha bacon strip steak.",
-         date: new Date('2029-01-22T16:28:32.615Z'),
-         author_id: 1
-      },
-      {
-         id: 7,
-         summary: "Activty 7",
-         company: "Awesome Deals",
-         customer_name: "Jane Doe",
-         description: "Ribeye kevin pig, spare ribs drumstick jowl short ribs alcatra burgdoggen meatball buffalo biltong brisket.",
-         date: new Date('2029-01-22T16:28:32.615Z'),
-         author_id: 1
+         author_id: users[3].id
       }
+      // {
+      //    id: '8e75ca8d-227f-470f-a7ea-801b706335cf',
+      //    summary: "Activty 5",
+      //    company: "eCorp",
+      //    customer_name: "Victor",
+      //    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non. Adipisci, pariatur. Molestiae, libero esse hic adipisci autem neque?",
+      //    date: new Date('2029-01-22T16:28:32.615Z'),
+      //    author_id: users[2].id
+      // },
+      // {
+      //    id: '8e75ca8d-227f-470f-a7ea-801b706335cf',
+      //    summary: "Activty 6",
+      //    company: "Awesome Deals",
+      //    customer_name: "Jane Doe",
+      //    description: "Beef ribs alcatra ground round prosciutto landjaeger strip steak leberkas doner spare ribs andouille filet mignon venison ham hock ham ball tip. T-bone buffalo boudin shankle short loin picanha bacon strip steak.",
+      //    date: new Date('2029-01-22T16:28:32.615Z'),
+      //    author_id: users[0].id
+      // },
+      // {
+      //    id: '657f4aae-22ce-40ce-9dc2-b6595cbd7386',
+      //    summary: "Activty 7",
+      //    company: "Awesome Deals",
+      //    customer_name: "Jane Doe",
+      //    description: "Ribeye kevin pig, spare ribs drumstick jowl short ribs alcatra burgdoggen meatball buffalo biltong brisket.",
+      //    date: new Date('2029-01-22T16:28:32.615Z'),
+      //    author_id: users[1].id
+      // }
    ]
 }
 
-function makeExpectedActvitiy(users, actvity) {
-   const author = users.find(user => user.id === actvity.author_id)
+function makeExpectedActivity(users, activity) {
+   const author = users.find(user => user.id === activity.author_id)
  
    return {
-      id: actvity.id,
+      id: activity.id,
       summary: activity.summary,
       company: activity.company,
       customer_name: activity.customer_name,
       description: activity.description,
       date: activity.date.toISOString(),
+      // author_id: author.id
       author_id: activity.author_id
-      // number_of_comments,
-      // author: {
-      //    id: author.id,
-      //    user_name: author.user_name,
-      //    full_name: author.full_name,
-      //    nickname: author.nickname,
-      //    date_created: author.date_created.toISOString(),
-      //    date_modified: author.date_modified || null,
-      // },
    }
 }
 
@@ -161,7 +153,7 @@ function seedUsers(db, users) {
       })
 }
 
-function seedActivitiesTable(db, users, activities) {
+function seedActivitiesTables(db, users, activities) {
    return db.transaction(async trx => {
       await seedUsers(trx, users)
       await trx.into('activities').insert(activities)
@@ -174,9 +166,9 @@ function seedActivitiesTable(db, users, activities) {
 module.exports = {
    makeUsersArray,
    makeActivitiesArray,
-   makeExpectedActvitiy,
+   makeExpectedActivity,
    makeActivitiesFixtures,
    cleanTables,
-   seedActivitiesTable,
+   seedActivitiesTables,
    seedUsers
 }

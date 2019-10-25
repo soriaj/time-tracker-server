@@ -7,9 +7,9 @@ const ActivitiesService = {
          .select('*')
    },
 
-   serializeActivities(actvity) {
+   serializeActivities(activity) {
       return {
-         id: actvity.id,
+         id: activity.id,
          summary: xss(activity.summary),
          company: xss(activity.company),
          customer_name: xss(activity.customer_name),

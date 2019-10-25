@@ -10,6 +10,7 @@ activitiesRouter
       ActivitiesService.getAllActivities(knexInstance)
          .then(activities => {
             res.json(activities.map(ActivitiesService.serializeActivities))
+            // res.json(activities)
             // console.log(activities)
             // res.json()
          })

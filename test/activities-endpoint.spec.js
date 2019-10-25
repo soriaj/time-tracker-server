@@ -32,6 +32,28 @@ describe('Activities Endpoints', () => {
                .expect(200, [])
          })
       })
+
+      context('Given there are activities in the database', () => {
+         beforeEach('insert activities', () =>
+            helpers.seedActivitiesTables(
+               db,
+               testUsers,
+               testActivities,
+           )
+         )
+   
+         it('responds with 200 and all of the activities', () => {
+            const expectedActivities = testActivities.map(activity =>
+               helpers.makeExpectedActivity(
+                  testUsers,
+                  activity,
+               )
+            )
+            return supertest(app)
+               .get('/api/activities')
+               .expect(200, expectedActivities)
+         })
+      })
    })
 
 // END OF TESTS
