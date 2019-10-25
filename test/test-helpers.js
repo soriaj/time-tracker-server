@@ -1,3 +1,5 @@
+const bcrypt = require('bcryptjs')
+
 function makeUsersArray() {
    return [
       {
@@ -39,7 +41,7 @@ function makeActivitiesArray(users) {
          company: "eCorp",
          customer_name: "Mr. Robot",
          description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non. Adipisci, pariatur. Molestiae, libero esse hic adipisci autem neque?",
-         date: "09/12/19",
+         date: new Date('2029-01-22T16:28:32.615Z'),
          author_id: 1
       },
       {
@@ -48,7 +50,7 @@ function makeActivitiesArray(users) {
          company: "Awesome Deals",
          customer_name: "Jane Doe",
          description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum, exercitationem cupiditate dignissimos est perspiciatis, nobis commodi alias saepe atque facilis labore sequi deleniti. Sint, adipisci facere! Velit temporibus debitis rerum.",
-         date: "08/29/19",
+         date: new Date('2029-01-22T16:28:32.615Z'),
          author_id: 2
       },
       {
@@ -57,7 +59,7 @@ function makeActivitiesArray(users) {
          company: "Energy Inc.",
          customer_name: "John Energy",
          description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus, voluptate? Necessitatibus, reiciendis? Cupiditate totam laborum esse animi ratione ipsa dignissimos laboriosam eos similique cumque. Est nostrum esse porro id quaerat.",
-         date: "10/02/19",
+         date: new Date('2029-01-22T16:28:32.615Z'),
          author_id: 3
       },
       {
@@ -66,7 +68,7 @@ function makeActivitiesArray(users) {
          company: "eCorp",
          customer_name: "Mr. Robot",
          description: "Bacon ipsum dolor amet doner shank beef t-bone brisket meatloaf pork loin ham hock chuck ball tip tri-tip pastrami pork chop. Buffalo venison bresaola, cow ground round brisket meatloaf tail cupim kielbasa turducken.",
-         date: "09/21/19",
+         date: new Date('2029-01-22T16:28:32.615Z'),
          author_id: 1
       },
       {
@@ -75,7 +77,7 @@ function makeActivitiesArray(users) {
          company: "eCorp",
          customer_name: "Victor",
          description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non. Adipisci, pariatur. Molestiae, libero esse hic adipisci autem neque?",
-         date: "07/11/19",
+         date: new Date('2029-01-22T16:28:32.615Z'),
          author_id: 2
       },
       {
@@ -84,7 +86,7 @@ function makeActivitiesArray(users) {
          company: "Awesome Deals",
          customer_name: "Jane Doe",
          description: "Beef ribs alcatra ground round prosciutto landjaeger strip steak leberkas doner spare ribs andouille filet mignon venison ham hock ham ball tip. T-bone buffalo boudin shankle short loin picanha bacon strip steak.",
-         date: "10/01/19",
+         date: new Date('2029-01-22T16:28:32.615Z'),
          author_id: 1
       },
       {
@@ -93,7 +95,7 @@ function makeActivitiesArray(users) {
          company: "Awesome Deals",
          customer_name: "Jane Doe",
          description: "Ribeye kevin pig, spare ribs drumstick jowl short ribs alcatra burgdoggen meatball buffalo biltong brisket.",
-         date: "10/11/19",
+         date: new Date('2029-01-22T16:28:32.615Z'),
          author_id: 1
       }
    ]
