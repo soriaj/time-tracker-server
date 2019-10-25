@@ -16,14 +16,6 @@ const ActivitiesService = {
          description: xss(activity.description),
          date: new Date(activity.date),
          author_id: activity.author_id
-      //   author: {
-      //     id: author.id,
-      //     user_name: author.user_name,
-      //     full_name: author.full_name,
-      //     nickname: author.nickname,
-      //     date_created: new Date(author.date_created),
-      //     date_modified: new Date(author.date_modified) || null
-      //   },
       }
    },
   
