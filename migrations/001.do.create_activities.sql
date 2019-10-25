@@ -1,6 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TABLE actvities (
+CREATE TABLE activities (
    id uuid PRIMARY KEY DEFAULT uuid_generate_v4() UNIQUE,
    summary TEXT NOT NULL,
    company TEXT NOT NULL,
