@@ -283,6 +283,31 @@ describe('Activities Endpoints', () => {
                .send({ bogusField: 'Bad field data to send' })
                .expect(400, { error: { message: `Request body must contain either 'summary', 'company', 'customer_name', 'description' `} })
          })
+
+         it('responds with 204 when updating only a part of the fields', () => {
+            const idToUpdate = 'bf4fa1f4-2ef0-4bf1-a6cd-45b985d7d5c9'
+            const updateActivity = { summary: 'Updated Summary Only' }
+            const findActivityToUpdate = testActivities.filter(activity => activity.id == idToUpdate)
+            const expectedActivity = {
+               ...findActivityToUpdate,
+               ...updateActivity
+            }
+
+            return supertest(app)
+            .patch(`/api/activities/${idToUpdate}`)
+               // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
+               .send({
+                  ...updateActivity,
+                  bogusField: 'Bad field data to send, not in GET response'
+               })
+               .expect(204)
+               .then(res => {
+                  supertest(app)
+                     .get(`/api/activities/${idToUpdate}`)
+                     .expect(expectedActivity)
+               })
+
+         })
       })
    })
 
