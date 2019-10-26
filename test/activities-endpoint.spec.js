@@ -117,7 +117,17 @@ describe('Activities Endpoints', () => {
    })
 
    describe.only('POST /api/activities', () => {
-      it('create a acitivty, responding with 201 and the new acitivty', () => {
+      beforeEach('insert activities', () =>
+         helpers.seedActivitiesTables(
+            db,
+            testUsers,
+            testActivities,
+         )
+      )
+
+      it('create a acitivty, responding with 201 and the new acitivty', function() {
+         this.retries(3)
+
          const newActivity = {
             summary: "New Activity",
             company: "New Company",
