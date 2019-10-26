@@ -13,7 +13,7 @@ const ActivitiesService = {
          .where('id', id)
          .first()
    },
-   insertActivities(db, newActivity){
+   insertActivity(db, newActivity){
       return db
          .insert(newActivity)
          .into('activities')

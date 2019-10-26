@@ -84,7 +84,7 @@ describe('Activities Endpoints', () => {
       })
    })
 
-   describe.only('GET /api/activities/:activity_id', () => {
+   describe('GET /api/activities/:activity_id', () => {
       context('Given no acitivty', () => {
          it('responds with 404', () => {
             const acitivtyId = '0d8ff411-5938-4777-9142-759d99cdd934'
@@ -113,6 +113,40 @@ describe('Activities Endpoints', () => {
                // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                .expect(200, expectedActivity)
          })
+      })
+   })
+
+   describe.only('POST /api/activities', () => {
+      it('create a acitivty, responding with 201 and the new acitivty', () => {
+         const newActivity = {
+            summary: "New Activity",
+            company: "New Company",
+            customer_name: "New Customer",
+            description: "New Description for POST",
+            date: new Date('2029-01-22T16:28:32.615Z'),
+            author_id: testUsers[0].id
+         }
+         return supertest(app)
+            .post('/api/activities')
+            // .set('Autorization', `Bearer ${process.env.API_TOKEN}`)
+            .send(newActivity)
+            .expect(201)
+            .expect(res => {
+               expect(res.body).to.have.property('id')
+               expect(res.body.summary).to.eql(newActivity.summary)
+               expect(res.body.company).to.eql(newActivity.company)
+               expect(res.body.customer_name).to.eql(newActivity.customer_name)
+               expect(res.body.description).to.eql(newActivity.description)
+               expect(res.headers.location).to.eql(`/api/activities/${res.body.id}`)
+               const expected = new Date().toLocaleString()
+               const actual = new Date(res.body.date).toLocaleString()
+               expect(expected).to.eql(actual)
+            })
+            .then(postRes => {
+               supertest(app)
+                  .get(`/api/activities/${postRes.body.id}`)
+                  .expect(postRes.body)
+            })
       })
    })
 

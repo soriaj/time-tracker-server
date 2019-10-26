@@ -14,6 +14,9 @@ activitiesRouter
          })
          .catch(next)
    })
+   .post(bodyParser, (req, res, next) => {
+      res.send(201)
+   })
 
 activitiesRouter
    .route('/:activity_id')
