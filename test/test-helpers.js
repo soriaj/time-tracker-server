@@ -177,16 +177,10 @@ function seedActivitiesTables(db, users, activities) {
    return db.transaction(async trx => {
       await seedUsers(trx, users)
       await trx.into('activities').insert(activities)
-      // await trx.raw(
-      //    `SELECT set`
-      // )
    })   
 }
 
 function seedMaliciousActivity(db, user, activity) {
-   // return db
-   //   .into('activities_users')
-   //   .insert([user])
    return seedUsers(db, [user])
      .then(() =>
        db
