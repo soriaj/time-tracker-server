@@ -1,6 +1,8 @@
 const knex = require('knex')
 const app = require('../src/app')
 const helpers = require('./test-helpers')
+const setTZ = require('set-tz')
+setTZ('UTC')
 
 describe('Activities Endpoints', () => {
    let db
@@ -24,7 +26,7 @@ describe('Activities Endpoints', () => {
 
    afterEach('clenup', () => helpers.cleanTables(db))
 
-   describe.only('GET /api/activities', () => {
+   describe('GET /api/activities', () => {
       context('Given no activities', () => {
          it('responds with 200 and empty list', () => {
             return supertest(app)
@@ -78,6 +80,38 @@ describe('Activities Endpoints', () => {
                expect(res.body[0].summary).to.eql(expectedActivity.summary)
                expect(res.body[0].description).to.eql(expectedActivity.description)
              })
+         })
+      })
+   })
+
+   describe.only('GET /api/activities/:activity_id', () => {
+      context('Given no acitivty', () => {
+         it('responds with 404', () => {
+            const acitivtyId = '0d8ff411-5938-4777-9142-759d99cdd934'
+            return supertest(app)
+               .get(`/api/activities/${acitivtyId}`)
+               // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
+               .expect(404, { error: { message: `Activity doesn't exist` }})
+         })
+         
+      })
+
+      context('Given there are activities in the database', () => {
+         beforeEach('insert activities', () =>
+            helpers.seedActivitiesTables(
+               db,
+               testUsers,
+               testActivities,
+           )
+         )
+
+         it('responds with 200 and the specified activity', () => {
+            const acitivtyId = 'bf4fa1f4-2ef0-4bf1-a6cd-45b985d7d5c9'
+            const expectedActivity = testActivities[0]
+            return supertest(app)
+               .get(`/api/activities/${acitivtyId}`)
+               // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
+               .expect(200, expectedActivity)
          })
       })
    })

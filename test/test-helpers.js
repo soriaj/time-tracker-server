@@ -41,7 +41,7 @@ function makeActivitiesArray(users) {
          company: "eCorp",
          customer_name: "Mr. Robot",
          description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non. Adipisci, pariatur. Molestiae, libero esse hic adipisci autem neque?",
-         date: new Date('2029-01-22T16:28:32.615Z'),
+         date: new Date('2029-01-22T16:28:32.615Z').toISOString(),
          author_id: users[0].id
       },
       {
@@ -50,7 +50,7 @@ function makeActivitiesArray(users) {
          company: "Awesome Deals",
          customer_name: "Jane Doe",
          description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum, exercitationem cupiditate dignissimos est perspiciatis, nobis commodi alias saepe atque facilis labore sequi deleniti. Sint, adipisci facere! Velit temporibus debitis rerum.",
-         date: new Date('2029-01-22T16:28:32.615Z'),
+         date: new Date('2029-01-22T16:28:32.615Z').toISOString(),
          author_id: users[1].id
       },
       {
@@ -59,7 +59,7 @@ function makeActivitiesArray(users) {
          company: "Energy Inc.",
          customer_name: "John Energy",
          description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus, voluptate? Necessitatibus, reiciendis? Cupiditate totam laborum esse animi ratione ipsa dignissimos laboriosam eos similique cumque. Est nostrum esse porro id quaerat.",
-         date: new Date('2029-01-22T16:28:32.615Z'),
+         date: new Date('2029-01-22T16:28:32.615Z').toISOString(),
          author_id: users[2].id
       },
       {
@@ -68,7 +68,7 @@ function makeActivitiesArray(users) {
          company: "eCorp",
          customer_name: "Mr. Robot",
          description: "Bacon ipsum dolor amet doner shank beef t-bone brisket meatloaf pork loin ham hock chuck ball tip tri-tip pastrami pork chop. Buffalo venison bresaola, cow ground round brisket meatloaf tail cupim kielbasa turducken.",
-         date: new Date('2029-01-22T16:28:32.615Z'),
+         date: new Date('2029-01-22T16:28:32.615Z').toISOString(),
          author_id: users[3].id
       }
       // {

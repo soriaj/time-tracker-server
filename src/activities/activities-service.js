@@ -6,6 +6,13 @@ const ActivitiesService = {
          .from('activities')
          .select('*')
    },
+   getById(db, id) {
+      return db
+         .from('activities')
+         .select('*')
+         .where('id', id)
+         .first()
+   },
 
    serializeActivities(activity) {
       return {
