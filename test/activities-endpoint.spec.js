@@ -54,6 +54,32 @@ describe('Activities Endpoints', () => {
                .expect(200, expectedActivities)
          })
       })
+
+      context(`Given an XSS attack article`, () => {
+         const testUser = helpers.makeUsersArray()[1]
+         const {
+           maliciousActivity,
+           expectedActivity,
+         } = helpers.makeMaliciousActivity(testUser)
+   
+         beforeEach('insert malicious article', () => {
+           return helpers.seedMaliciousActivity(
+             db,
+             testUser,
+             maliciousActivity,
+           )
+         })
+   
+         it('removes XSS attack content', () => {
+           return supertest(app)
+             .get(`/api/activities`)
+             .expect(200)
+             .expect(res => {
+               expect(res.body[0].summary).to.eql(expectedActivity.summary)
+               expect(res.body[0].description).to.eql(expectedActivity.description)
+             })
+         })
+      })
    })
 
 // END OF TESTS

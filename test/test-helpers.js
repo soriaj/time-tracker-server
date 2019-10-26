@@ -103,7 +103,7 @@ function makeActivitiesArray(users) {
 
 function makeExpectedActivity(users, activity) {
    const author = users.find(user => user.id === activity.author_id)
- 
+   // console.log(author)
    return {
       id: activity.id,
       summary: activity.summary,
@@ -111,8 +111,28 @@ function makeExpectedActivity(users, activity) {
       customer_name: activity.customer_name,
       description: activity.description,
       date: activity.date.toISOString(),
-      // author_id: author.id
       author_id: activity.author_id
+   }
+}
+
+function makeMaliciousActivity(user) {
+   const maliciousActivity = {
+     id: '657f4aae-22ce-40ce-9dc2-b6595cbd7386',
+     summary: 'Naughty naughty very naughty <script>alert("xss");</script>',
+     company: "Malicious Deals",
+     customer_name: "Really Malicious",
+     description: 'Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.',
+     date: new Date(),
+     author_id: user.id,
+   }
+   const expectedActivity = {
+     ...makeExpectedActivity([user], maliciousActivity),
+     summary: 'Naughty naughty very naughty &lt;script&gt;alert(\"xss\");&lt;/script&gt;',
+     description: `Bad image <img src="https://url.to.file.which/does-not.exist">. But not <strong>all</strong> bad.`,
+   }
+   return {
+      maliciousActivity,
+      expectedActivity,
    }
 }
 
@@ -163,12 +183,26 @@ function seedActivitiesTables(db, users, activities) {
    })   
 }
 
+function seedMaliciousActivity(db, user, activity) {
+   // return db
+   //   .into('activities_users')
+   //   .insert([user])
+   return seedUsers(db, [user])
+     .then(() =>
+       db
+         .into('activities')
+         .insert([activity])
+     )
+ }
+
 module.exports = {
    makeUsersArray,
    makeActivitiesArray,
    makeExpectedActivity,
+   makeMaliciousActivity,
    makeActivitiesFixtures,
    cleanTables,
    seedActivitiesTables,
-   seedUsers
+   seedUsers,
+   seedMaliciousActivity
 }
