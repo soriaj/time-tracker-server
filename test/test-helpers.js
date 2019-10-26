@@ -110,7 +110,7 @@ function makeExpectedActivity(users, activity) {
       company: activity.company,
       customer_name: activity.customer_name,
       description: activity.description,
-      date: activity.date.toISOString(),
+      date: activity.date,
       author_id: activity.author_id
    }
 }

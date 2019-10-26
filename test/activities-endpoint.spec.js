@@ -26,6 +26,7 @@ describe('Activities Endpoints', () => {
 
    afterEach('clenup', () => helpers.cleanTables(db))
 
+   // GET ACTIVITY TEST
    describe('GET /api/activities', () => {
       context('Given no activities', () => {
          it('responds with 200 and empty list', () => {
@@ -84,6 +85,7 @@ describe('Activities Endpoints', () => {
       })
    })
 
+   // GET SPECIFIC ACTIVITY TEST
    describe('GET /api/activities/:activity_id', () => {
       context('Given no acitivty', () => {
          it('responds with 404', () => {
@@ -116,7 +118,8 @@ describe('Activities Endpoints', () => {
       })
    })
 
-   describe.only('POST /api/activities', () => {
+   // POST ACTIVITY TEST
+   describe('POST /api/activities', () => {
       beforeEach('insert activities', () =>
          helpers.seedActivitiesTables(
             db,
@@ -157,6 +160,69 @@ describe('Activities Endpoints', () => {
                   .get(`/api/activities/${postRes.body.id}`)
                   .expect(postRes.body)
             })
+      })
+
+      const requiredFields = ['summary', 'company', 'customer_name']
+
+      requiredFields.forEach(field => {
+         const testActivity = testActivities[0]
+         const testUser = testUsers[0]
+         const newActivity = {
+            summary: "New Activity",
+            company: "New Company",
+            customer_name: "New Customer",
+            description: "New Description for POST",
+            date: new Date('2029-01-22T16:28:32.615Z'),
+            author_id: testUsers[0].id
+         }
+
+         it(`responds with 400 and error message when the '${field}' is missin`, () => {
+            delete newActivity[field]
+
+            return supertest(app)
+               .post('/api/activities')
+               // .set('Authorization', helpers.makeAuthHeader(testUser))
+               .send(newActivity)
+               .expect(400, { error: `Missing '${field}' in request body` })
+         })
+      })
+   })
+
+   // DELETE ACTIVITY TEST
+   describe.only('DELETE /api/acitvities/:activity_id', () => {
+      context('Given no acitivty', () => {
+         it('responds with 404', () => {
+            const acitivtyId = '0d8ff411-5938-4777-9142-759d99cdd934'
+            return supertest(app)
+               .delete(`/api/activities/${acitivtyId}`)
+               // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
+               .expect(404, { error: { message: `Activity doesn't exist` }})
+         }) 
+      })
+
+      context('Given there are activities in the database', () => {
+         beforeEach('insert activities', () =>
+            helpers.seedActivitiesTables(
+               db,
+               testUsers,
+               testActivities,
+           )
+         )
+
+         it('responds with 204 and the removes the activity', () => {
+            const idToRemove = 'bf4fa1f4-2ef0-4bf1-a6cd-45b985d7d5c9'
+            const expectedActivity = testActivities.filter(activity => activity.id !== idToRemove)
+            return supertest(app)
+               .delete(`/api/activities/${idToRemove}`)
+               // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
+               .expect(204)
+               .then(res => {
+                  supertest(app)
+                     .get('/api/activities')
+                     // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
+                     .expect(expectedActivity)
+               })
+         })
       })
    })
 

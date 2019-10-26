@@ -52,6 +52,15 @@ activitiesRouter
    .get((req, res) => {
       res.json(ActivitiesService.serializeActivities(res.actvity))
    })
+   .delete((req, res, next) => {
+      const { activity_id } = req.params
+      const knexInstance = req.app.get('db')
+      ActivitiesService.deleteActivity(knexInstance, activity_id)
+         .then(() => {
+            res.status(204).end()
+         })
+         .catch(next)
+   })
 
 
 module.exports = activitiesRouter
