@@ -13,7 +13,27 @@ const ActivitiesService = {
          .where('id', id)
          .first()
    },
-
+   insertActivities(db, newActivity){
+      return db
+         .insert(newActivity)
+         .into('activities')
+         .returning('*')
+         .then(rows => {
+            return rows[0]
+         })
+   },
+   updateActivity(db, id, newActivityData){
+      return db
+         .from('activities')
+         .where('id', id)
+         .update(newActivityData)
+   },
+   deleteActivity(db, id){
+      return db
+         .from('activities')
+         .where('id', id)
+         .delete()
+   },
    serializeActivities(activity) {
       return {
          id: activity.id,
