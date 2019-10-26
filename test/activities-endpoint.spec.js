@@ -227,7 +227,7 @@ describe('Activities Endpoints', () => {
    })
 
    // PATCH ACTIVITY TEST
-   describe.only('PATCH /api/activities/:activity_id', () => {
+   describe('PATCH /api/activities/:activity_id', () => {
       context('Given no acitivty', () => {
          it('responds with 404', () => {
             const acitivtyId = '0d8ff411-5938-4777-9142-759d99cdd934'
