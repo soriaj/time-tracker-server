@@ -61,6 +61,23 @@ activitiesRouter
          })
          .catch(next)
    })
+   .patch(bodyParser, (req, res, next) => {
+      const { summary, company, customer_name, description, author_id } = req.body;
+      const activityToUpdate = { summary, company, customer_name, description, author_id }
+      const knexInstance = req.app.get('db')
+      const { activity_id } = req.params
+
+      const numOfActivities = Object.values(activityToUpdate).filter(Boolean).length
+      if(numOfActivities === 0){
+         return res.status(400).json({ error: { message: `Request body must contain either 'summary', 'company', 'customer_name', 'description' `}})
+      }
+
+      ActivitiesService.updateActivity(knexInstance, activity_id, activityToUpdate)
+         .then(() => {
+            res.status(204).end()
+         })
+         .catch(next)
+   })
 
 
 module.exports = activitiesRouter

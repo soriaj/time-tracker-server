@@ -189,7 +189,7 @@ describe('Activities Endpoints', () => {
    })
 
    // DELETE ACTIVITY TEST
-   describe.only('DELETE /api/acitvities/:activity_id', () => {
+   describe('DELETE /api/acitvities/:activity_id', () => {
       context('Given no acitivty', () => {
          it('responds with 404', () => {
             const acitivtyId = '0d8ff411-5938-4777-9142-759d99cdd934'
@@ -222,6 +222,66 @@ describe('Activities Endpoints', () => {
                      // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                      .expect(expectedActivity)
                })
+         })
+      })
+   })
+
+   // PATCH ACTIVITY TEST
+   describe.only('PATCH /api/activities/:activity_id', () => {
+      context('Given no acitivty', () => {
+         it('responds with 404', () => {
+            const acitivtyId = '0d8ff411-5938-4777-9142-759d99cdd934'
+            return supertest(app)
+               .delete(`/api/activities/${acitivtyId}`)
+               // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
+               .expect(404, { error: { message: `Activity doesn't exist` }})
+         }) 
+      })
+
+      context('Given there are activities in the database', () => {
+         beforeEach('insert activities', () =>
+            helpers.seedActivitiesTables(
+               db,
+               testUsers,
+               testActivities,
+           )
+         )
+
+         it('responds with 204 and the updates the activity', () => {
+            const idToUpdate = 'bf4fa1f4-2ef0-4bf1-a6cd-45b985d7d5c9'
+            const updateActivity = {
+               summary: "Updated Activity",
+               company: "Updated Company",
+               customer_name: "Updated Customer",
+               description: "Updated Description for PATCH",
+               date: new Date('2029-01-22T16:28:32.615Z'),
+               author_id: testUsers[0].id
+            }
+
+            const findActivityToUpdate = testActivities.filter(activity => activity.id == idToUpdate)
+            const expectedActivity = {
+               ...findActivityToUpdate,
+               ...updateActivity
+            }
+            return supertest(app)
+               .patch(`/api/activities/${idToUpdate}`)
+               // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
+               .send(updateActivity)
+               .expect(204)
+               .then(res => {
+                  supertest(app)
+                     .get(`/api/activities/${idToUpdate}`)
+                     .expect(expectedActivity)
+               })
+         })
+
+         it('responds with 400 when no required fields are supplied', () => {
+            const idToUpdate = 'bf4fa1f4-2ef0-4bf1-a6cd-45b985d7d5c9'
+            return supertest(app)
+               .patch(`/api/activities/${idToUpdate}`)
+               // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
+               .send({ bogusField: 'Bad field data to send' })
+               .expect(400, { error: { message: `Request body must contain either 'summary', 'company', 'customer_name', 'description' `} })
          })
       })
    })
