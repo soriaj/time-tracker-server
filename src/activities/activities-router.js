@@ -8,7 +8,7 @@ const bodyParser = express.json()
 
 activitiesRouter
    .route('/')
-   .all(requireAuth)
+   // .all(requireAuth)
    .get((req, res, next) => { 
       const knexInstance = req.app.get('db')
       ActivitiesService.getAllActivities(knexInstance)
@@ -38,7 +38,7 @@ activitiesRouter
 
 activitiesRouter
    .route('/:activity_id')
-   .all(requireAuth)
+   // .all(requireAuth)
    .all((req, res, next) => {
       const { activity_id } = req.params
       const knexInstance = req.app.get('db')
