@@ -7,7 +7,7 @@ const bodyParser = express.json()
 
 activitiesRouter
    .route('/')
-   .get((req, res, next) => {
+   .get((req, res, next) => { 
       const knexInstance = req.app.get('db')
       ActivitiesService.getAllActivities(knexInstance)
          .then(activities => {
