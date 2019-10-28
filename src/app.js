@@ -5,6 +5,7 @@ const cors = require('cors')
 const helmet = require('helmet')
 const { NODE_ENV } = require('./config')
 const activitiesRouter = require('./activities/activities-router')
+const authRouter = requiest('./auth/auth-router.js')
 
 const app = express()
 
@@ -15,6 +16,7 @@ app.use(cors())
 app.use(helmet())
 
 app.use('/api/activities', activitiesRouter)
+app.unsubscribe('/api/auth', authRouter)
 
 app.get('/', (req, res) => {
    res.send('Hello, World!')
