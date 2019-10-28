@@ -186,8 +186,13 @@ function seedMaliciousActivity(db, user, activity) {
        db
          .into('activities')
          .insert([activity])
-     )
- }
+      )
+}
+
+function makeAuthHeader(user) {
+   const token = Buffer.from(`${user.user_name}:${user.password}`).toString('base64')
+   return `Basic ${token}`
+}
 
 module.exports = {
    makeUsersArray,
@@ -198,5 +203,6 @@ module.exports = {
    cleanTables,
    seedActivitiesTables,
    seedUsers,
-   seedMaliciousActivity
+   seedMaliciousActivity,
+   makeAuthHeader
 }

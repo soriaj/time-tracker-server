@@ -8,7 +8,7 @@ const bodyParser = express.json()
 
 activitiesRouter
    .route('/')
-   // .all(requireAuth)
+   .all(requireAuth)
    .get((req, res, next) => { 
       const knexInstance = req.app.get('db')
       ActivitiesService.getAllActivities(knexInstance)
@@ -17,16 +17,19 @@ activitiesRouter
          })
          .catch(next)
    })
-   .post(bodyParser, (req, res, next) => {
-      const { summary, company, customer_name, description, author_id } = req.body;
-      const newActivity = { summary, company, customer_name, description, author_id }
+   .post(requireAuth, bodyParser, (req, res, next) => {
+      const { summary, company, customer_name, description } = req.body;
+      const newActivity = { summary, company, customer_name, description }
+      console.log(newActivity)
       const knexInstance = req.app.get('db')
 
       for(const [key, value] of Object.entries(newActivity))
          if(value == null) {
             return res.status(400).json({ error: `Missing '${key}' in request body` })
          }
-
+      
+      newActivity.author_id = req.user.id
+      console.log(newActivity)
       ActivitiesService.insertActivity(knexInstance, newActivity)
          .then(activity => {
             res.status(201)
@@ -38,24 +41,24 @@ activitiesRouter
 
 activitiesRouter
    .route('/:activity_id')
-   // .all(requireAuth)
+   .all(requireAuth)
    .all((req, res, next) => {
       const { activity_id } = req.params
       const knexInstance = req.app.get('db')
       ActivitiesService.getById(knexInstance, activity_id)
-         .then(actvity => {
-            if(!actvity) {
+         .then(activity => {
+            if(!activity) {
                return res.status(404).json({ error: { message: `Activity doesn't exist` }})
             }
-            res.actvity = actvity
+            res.activity = activity
             next()
          })
          .catch(next)
    })
    .get((req, res) => {
-      res.json(ActivitiesService.serializeActivities(res.actvity))
+      res.json(ActivitiesService.serializeActivities(res.activity))
    })
-   .delete((req, res, next) => {
+   .delete(requireAuth, (req, res, next) => {
       const { activity_id } = req.params
       const knexInstance = req.app.get('db')
       ActivitiesService.deleteActivity(knexInstance, activity_id)
@@ -64,7 +67,7 @@ activitiesRouter
          })
          .catch(next)
    })
-   .patch(bodyParser, (req, res, next) => {
+   .patch(requireAuth, bodyParser, (req, res, next) => {
       const { summary, company, customer_name, description, author_id } = req.body;
       const activityToUpdate = { summary, company, customer_name, description, author_id }
       const knexInstance = req.app.get('db')
