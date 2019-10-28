@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 function makeUsersArray() {
    return [
@@ -51,7 +52,7 @@ function makeActivitiesArray(users) {
          customer_name: "Jane Doe",
          description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum, exercitationem cupiditate dignissimos est perspiciatis, nobis commodi alias saepe atque facilis labore sequi deleniti. Sint, adipisci facere! Velit temporibus debitis rerum.",
          date: new Date('2029-01-22T16:28:32.615Z').toISOString(),
-         author_id: users[1].id
+         author_id: users[0].id
       },
       {
          id: 'f3c2b711-eef2-4125-a018-ecc03dc1dc72',
@@ -60,7 +61,7 @@ function makeActivitiesArray(users) {
          customer_name: "John Energy",
          description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus, voluptate? Necessitatibus, reiciendis? Cupiditate totam laborum esse animi ratione ipsa dignissimos laboriosam eos similique cumque. Est nostrum esse porro id quaerat.",
          date: new Date('2029-01-22T16:28:32.615Z').toISOString(),
-         author_id: users[2].id
+         author_id: users[0].id
       },
       {
          id: '0266c729-0449-4dd7-80db-3e899b5c5cde',
@@ -69,7 +70,7 @@ function makeActivitiesArray(users) {
          customer_name: "Mr. Robot",
          description: "Bacon ipsum dolor amet doner shank beef t-bone brisket meatloaf pork loin ham hock chuck ball tip tri-tip pastrami pork chop. Buffalo venison bresaola, cow ground round brisket meatloaf tail cupim kielbasa turducken.",
          date: new Date('2029-01-22T16:28:32.615Z').toISOString(),
-         author_id: users[3].id
+         author_id: users[0].id
       }
       // {
       //    id: '8e75ca8d-227f-470f-a7ea-801b706335cf',
@@ -189,10 +190,20 @@ function seedMaliciousActivity(db, user, activity) {
       )
 }
 
-function makeAuthHeader(user) {
-   const token = Buffer.from(`${user.user_name}:${user.password}`).toString('base64')
-   return `Basic ${token}`
-}
+// BASIC AUTH
+// function makeAuthHeader(user) {
+//    const token = Buffer.from(`${user.user_name}:${user.password}`).toString('base64')
+//    return `Basic ${token}`
+// }
+
+// JWT AUTH
+function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
+   const token = jwt.sign({ user_id: user.id }, secret, {
+     subject: user.user_name,
+     algorithm: 'HS256',
+   })
+   return `Bearer ${token}`
+} 
 
 module.exports = {
    makeUsersArray,

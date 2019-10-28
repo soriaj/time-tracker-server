@@ -4,7 +4,7 @@ const helpers = require('./test-helpers')
 const setTZ = require('set-tz')
 // setTZ('UTC')
 
-describe('Activities Endpoints', () => {
+describe('Protected Activities Endpoints', () => {
    let db
 
    const {
@@ -36,10 +36,10 @@ describe('Activities Endpoints', () => {
       )
 
       describe('GET /api/activities/:activity_id', () => {
-         it(`responds with 401 'Missing basic token' when no token`, () => {
+         it(`responds with 401 'Missing bearer token' when no token`, () => {
             return supertest(app)
                .get(`/api/activities/0266c729-0449-4dd7-80db-3e899b5c5cde`)
-               .expect(401, { error: 'Missing basic token' })
+               .expect(401, { error: 'Unauthorized request' })
          })
 
          it(`responds 401 'Unauthorized request' when no credentials`, () => {
@@ -55,14 +55,6 @@ describe('Activities Endpoints', () => {
             return supertest(app)
                .get(`/api/activities/0266c729-0449-4dd7-80db-3e899b5c5cde`)
                .set('Authorization', helpers.makeAuthHeader(userInvalidCreds))
-               .expect(401, { error: 'Unauthorized request' })
-         })
-
-         it(`responds 401 'Unauthorized request' when no credentials`, () => {
-            const userInvalidPass = { user_name: testUsers[0], password: 'wrong' }
-            return supertest(app)
-               .get(`/api/activities/0266c729-0449-4dd7-80db-3e899b5c5cde`)
-               .set('Authorization', helpers.makeAuthHeader(userInvalidPass))
                .expect(401, { error: 'Unauthorized request' })
          })
 

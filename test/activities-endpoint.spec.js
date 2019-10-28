@@ -36,7 +36,7 @@ describe('Activities Endpoints', () => {
          it('responds with 200 and empty list', () => {
             return supertest(app)
                .get('/api/activities')
-               .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
+               .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                .expect(200, [])
          })
       })
@@ -59,7 +59,7 @@ describe('Activities Endpoints', () => {
             )
             return supertest(app)
                .get('/api/activities')
-               .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
+               .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                .expect(200, expectedActivities)
          })
       })
@@ -103,8 +103,8 @@ describe('Activities Endpoints', () => {
             const acitivtyId = '0d8ff411-5938-4777-9142-759d99cdd934'
             return supertest(app)
                .get(`/api/activities/${acitivtyId}`)
-               .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
-               // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
+               .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+               
                .expect(404, { error: { message: `Activity doesn't exist` }})
          })
          
@@ -124,8 +124,8 @@ describe('Activities Endpoints', () => {
             const expectedActivity = testActivities[0]
             return supertest(app)
                .get(`/api/activities/${acitivtyId}`)
-               .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
-               // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
+               .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+               
                .expect(200, expectedActivity)
          })
       })
@@ -154,8 +154,7 @@ describe('Activities Endpoints', () => {
          }
          return supertest(app)
             .post('/api/activities')
-            .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
-            // .set('Autorization', `Bearer ${process.env.API_TOKEN}`)
+            .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
             .send(newActivity)
             .expect(201)
             .expect(res => {
@@ -196,7 +195,6 @@ describe('Activities Endpoints', () => {
             return supertest(app)
                .post('/api/activities')
                .set('Authorization', helpers.makeAuthHeader(testUser))
-               // .set('Authorization', helpers.makeAuthHeader(testUser))
                .send(newActivity)
                .expect(400, { error: `Missing '${field}' in request body` })
          })
@@ -215,7 +213,6 @@ describe('Activities Endpoints', () => {
             return supertest(app)
                .delete(`/api/activities/${acitivtyId}`)
                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-               // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                .expect(404, { error: { message: `Activity doesn't exist` }})
          }) 
       })
@@ -235,13 +232,11 @@ describe('Activities Endpoints', () => {
             return supertest(app)
                .delete(`/api/activities/${idToRemove}`)
                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-               // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                .expect(204)
                .then(res => {
                   supertest(app)
                      .get('/api/activities')
                      .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-                     // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                      .expect(expectedActivity)
                })
          })
@@ -260,7 +255,6 @@ describe('Activities Endpoints', () => {
             return supertest(app)
                .delete(`/api/activities/${acitivtyId}`)
                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-               // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                .expect(404, { error: { message: `Activity doesn't exist` }})
          }) 
       })
@@ -293,7 +287,6 @@ describe('Activities Endpoints', () => {
             return supertest(app)
                .patch(`/api/activities/${idToUpdate}`)
                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-               // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                .send(updateActivity)
                .expect(204)
                .then(res => {
@@ -309,7 +302,7 @@ describe('Activities Endpoints', () => {
             return supertest(app)
                .patch(`/api/activities/${idToUpdate}`)
                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-               // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
+               
                .send({ bogusField: 'Bad field data to send' })
                .expect(400, { error: { message: `Request body must contain either 'summary', 'company', 'customer_name', 'description' `} })
          })
@@ -326,19 +319,17 @@ describe('Activities Endpoints', () => {
             return supertest(app)
             .patch(`/api/activities/${idToUpdate}`)
             .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-               // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
-               .send({
-                  ...updateActivity,
-                  bogusField: 'Bad field data to send, not in GET response'
-               })
-               .expect(204)
-               .then(res => {
-                  supertest(app)
-                     .get(`/api/activities/${idToUpdate}`)
-                     .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-                     .expect(expectedActivity)
-               })
-
+            .send({
+               ...updateActivity,
+               bogusField: 'Bad field data to send, not in GET response'
+            })
+            .expect(204)
+            .then(res => {
+               supertest(app)
+                  .get(`/api/activities/${idToUpdate}`)
+                  .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                  .expect(expectedActivity)
+            })
          })
       })
    })
