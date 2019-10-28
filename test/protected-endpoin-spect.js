@@ -4,7 +4,7 @@ const helpers = require('./test-helpers')
 const setTZ = require('set-tz')
 // setTZ('UTC')
 
-describe.only('Activities Endpoints', () => {
+describe('Activities Endpoints', () => {
    let db
 
    const {

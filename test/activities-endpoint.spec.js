@@ -29,9 +29,14 @@ describe('Activities Endpoints', () => {
    // GET ACTIVITY TEST
    describe('GET /api/activities', () => {
       context('Given no activities', () => {
+         beforeEach('insert users', () => 
+            helpers.seedUsers(db, testUsers)
+         )
+
          it('responds with 200 and empty list', () => {
             return supertest(app)
                .get('/api/activities')
+               .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
                .expect(200, [])
          })
       })
@@ -54,6 +59,7 @@ describe('Activities Endpoints', () => {
             )
             return supertest(app)
                .get('/api/activities')
+               .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
                .expect(200, expectedActivities)
          })
       })
@@ -76,6 +82,7 @@ describe('Activities Endpoints', () => {
          it('removes XSS attack content', () => {
            return supertest(app)
              .get(`/api/activities`)
+             .set('Authorization', helpers.makeAuthHeader(testUser))
              .expect(200)
              .expect(res => {
                expect(res.body[0].summary).to.eql(expectedActivity.summary)
@@ -88,10 +95,15 @@ describe('Activities Endpoints', () => {
    // GET SPECIFIC ACTIVITY TEST
    describe('GET /api/activities/:activity_id', () => {
       context('Given no acitivty', () => {
+         beforeEach('insert users', () => 
+            helpers.seedUsers(db, testUsers)
+         )
+
          it('responds with 404', () => {
             const acitivtyId = '0d8ff411-5938-4777-9142-759d99cdd934'
             return supertest(app)
                .get(`/api/activities/${acitivtyId}`)
+               .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
                // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                .expect(404, { error: { message: `Activity doesn't exist` }})
          })
@@ -112,6 +124,7 @@ describe('Activities Endpoints', () => {
             const expectedActivity = testActivities[0]
             return supertest(app)
                .get(`/api/activities/${acitivtyId}`)
+               .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
                // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                .expect(200, expectedActivity)
          })
@@ -141,6 +154,7 @@ describe('Activities Endpoints', () => {
          }
          return supertest(app)
             .post('/api/activities')
+            .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
             // .set('Autorization', `Bearer ${process.env.API_TOKEN}`)
             .send(newActivity)
             .expect(201)
@@ -173,7 +187,7 @@ describe('Activities Endpoints', () => {
             customer_name: "New Customer",
             description: "New Description for POST",
             date: new Date('2029-01-22T16:28:32.615Z'),
-            author_id: testUsers[0].id
+            // author_id: testUsers[0].id
          }
 
          it(`responds with 400 and error message when the '${field}' is missin`, () => {
@@ -181,6 +195,7 @@ describe('Activities Endpoints', () => {
 
             return supertest(app)
                .post('/api/activities')
+               .set('Authorization', helpers.makeAuthHeader(testUser))
                // .set('Authorization', helpers.makeAuthHeader(testUser))
                .send(newActivity)
                .expect(400, { error: `Missing '${field}' in request body` })
@@ -191,10 +206,15 @@ describe('Activities Endpoints', () => {
    // DELETE ACTIVITY TEST
    describe('DELETE /api/acitvities/:activity_id', () => {
       context('Given no acitivty', () => {
+         beforeEach('insert users', () => 
+            helpers.seedUsers(db, testUsers)
+         )
+
          it('responds with 404', () => {
             const acitivtyId = '0d8ff411-5938-4777-9142-759d99cdd934'
             return supertest(app)
                .delete(`/api/activities/${acitivtyId}`)
+               .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                .expect(404, { error: { message: `Activity doesn't exist` }})
          }) 
@@ -214,11 +234,13 @@ describe('Activities Endpoints', () => {
             const expectedActivity = testActivities.filter(activity => activity.id !== idToRemove)
             return supertest(app)
                .delete(`/api/activities/${idToRemove}`)
+               .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                .expect(204)
                .then(res => {
                   supertest(app)
                      .get('/api/activities')
+                     .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                      // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                      .expect(expectedActivity)
                })
@@ -229,10 +251,15 @@ describe('Activities Endpoints', () => {
    // PATCH ACTIVITY TEST
    describe('PATCH /api/activities/:activity_id', () => {
       context('Given no acitivty', () => {
+         beforeEach('insert users', () => 
+            helpers.seedUsers(db, testUsers)
+         )
+
          it('responds with 404', () => {
             const acitivtyId = '0d8ff411-5938-4777-9142-759d99cdd934'
             return supertest(app)
                .delete(`/api/activities/${acitivtyId}`)
+               .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                .expect(404, { error: { message: `Activity doesn't exist` }})
          }) 
@@ -255,7 +282,7 @@ describe('Activities Endpoints', () => {
                customer_name: "Updated Customer",
                description: "Updated Description for PATCH",
                date: new Date('2029-01-22T16:28:32.615Z'),
-               author_id: testUsers[0].id
+               // author_id: testUsers[0].id
             }
 
             const findActivityToUpdate = testActivities.filter(activity => activity.id == idToUpdate)
@@ -265,12 +292,14 @@ describe('Activities Endpoints', () => {
             }
             return supertest(app)
                .patch(`/api/activities/${idToUpdate}`)
+               .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                .send(updateActivity)
                .expect(204)
                .then(res => {
                   supertest(app)
                      .get(`/api/activities/${idToUpdate}`)
+                     .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                      .expect(expectedActivity)
                })
          })
@@ -279,6 +308,7 @@ describe('Activities Endpoints', () => {
             const idToUpdate = 'bf4fa1f4-2ef0-4bf1-a6cd-45b985d7d5c9'
             return supertest(app)
                .patch(`/api/activities/${idToUpdate}`)
+               .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                .send({ bogusField: 'Bad field data to send' })
                .expect(400, { error: { message: `Request body must contain either 'summary', 'company', 'customer_name', 'description' `} })
@@ -295,6 +325,7 @@ describe('Activities Endpoints', () => {
 
             return supertest(app)
             .patch(`/api/activities/${idToUpdate}`)
+            .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                .send({
                   ...updateActivity,
@@ -304,6 +335,7 @@ describe('Activities Endpoints', () => {
                .then(res => {
                   supertest(app)
                      .get(`/api/activities/${idToUpdate}`)
+                     .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                      .expect(expectedActivity)
                })
 
