@@ -186,10 +186,9 @@ describe('Activities Endpoints', () => {
             customer_name: "New Customer",
             description: "New Description for POST",
             date: new Date('2029-01-22T16:28:32.615Z'),
-            // author_id: testUsers[0].id
          }
 
-         it(`responds with 400 and error message when the '${field}' is missin`, () => {
+         it(`responds with 400 and error message when the '${field}' is missing`, () => {
             delete newActivity[field]
 
             return supertest(app)
@@ -276,7 +275,6 @@ describe('Activities Endpoints', () => {
                customer_name: "Updated Customer",
                description: "Updated Description for PATCH",
                date: new Date('2029-01-22T16:28:32.615Z'),
-               // author_id: testUsers[0].id
             }
 
             const findActivityToUpdate = testActivities.filter(activity => activity.id == idToUpdate)

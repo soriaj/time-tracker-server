@@ -4,7 +4,6 @@ TRUNCATE activities_users, activities RESTART IDENTITY CASCADE;
 
 INSERT INTO activities_users (user_name, full_name, password)
 VALUES
-   -- ('javier', 'Javier Soria', 'Password1!'),
    ('javier', 'Javier Soria', '$2a$12$OA/Ow/k5FmGchOE5A9nLReDHk4rk/MZghl72yAbyoxOCUTeOXbnWS'),
    ('user1', 'User 01', '$2a$12$2QAjF4YY4ptfkzs5oR3KSeCLxZHKtX6B./hKJdtqWED2gXXSEmBG6');
 
