@@ -9,10 +9,10 @@ const bodyParser = express.json()
 
 activitiesRouter
    .route('/')
-   .all(requireAuth)
-   .get((req, res, next) => { 
+   .get(requireAuth, (req, res, next) => { 
       const knexInstance = req.app.get('db')
-      ActivitiesService.getAllActivities(knexInstance)
+      const author_id = req.user.id
+      ActivitiesService.getAllActivities(knexInstance, author_id)
          .then(activities => {
             res.json(activities.map(ActivitiesService.serializeActivities))
          })
@@ -45,10 +45,12 @@ activitiesRouter
    .all(requireAuth)
    .all((req, res, next) => {
       const { activity_id } = req.params
+      const author_id = req.user.id
       const knexInstance = req.app.get('db')
+
       ActivitiesService.getById(knexInstance, activity_id)
          .then(activity => {
-            if(!activity) {
+            if(!activity || activity.author_id !== author_id) {
                return res.status(404).json({ error: { message: `Activity doesn't exist` }})
             }
             res.activity = activity
@@ -69,8 +71,8 @@ activitiesRouter
          .catch(next)
    })
    .patch(requireAuth, bodyParser, (req, res, next) => {
-      const { summary, company, customer_name, description, author_id } = req.body;
-      const activityToUpdate = { summary, company, customer_name, description, author_id }
+      const { summary, company, customer_name, description } = req.body;
+      const activityToUpdate = { summary, company, customer_name, description }
       const knexInstance = req.app.get('db')
       const { activity_id } = req.params
 
@@ -79,6 +81,7 @@ activitiesRouter
          return res.status(400).json({ error: { message: `Request body must contain either 'summary', 'company', 'customer_name', 'description' `}})
       }
 
+      activityToUpdate.author_id = req.user.id
       ActivitiesService.updateActivity(knexInstance, activity_id, activityToUpdate)
          .then(() => {
             res.status(204).end()
