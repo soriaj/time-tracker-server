@@ -1,17 +1,29 @@
-# Express Boilerplate!
+# Time Tracker Server
 
-This is a boilerplate project used for starting new projects!
+Backend server for time-tracker-app. A time and activity tracking application.
+
+## Technologies
+- Node
+- Express
+- JWT
+- PostgreSQL
+
+## Testing 
+- Mocha
+- Chai
+- Supertest
 
 ## Set up
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+Complete the following steps to setup locally:
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
+1. Clone this repository to your local machine `git clone git@github.com:soriaj/time-tracker-server.git <NEW-PROJECTS-NAME>`
 2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
+3. Install the node dependencies `npm install`
+4. Create an `.env` file
+5. Create Postgres databases (test and prod)
+6. Add TEST_DATABASE_URL and DATABASE_URL path to .env
+7. Run `npm run migrate:test` and `npm run migrate` to create tables in test and prod databases
 
 ## Scripts
 

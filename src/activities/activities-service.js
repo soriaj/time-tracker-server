@@ -1,10 +1,12 @@
 const xss = require('xss')
 
 const ActivitiesService = {
-   getAllActivities(db) {
+   getAllActivities(db, author_id) {
       return db
          .from('activities')
+         .where('author_id', author_id)
          .select('*')
+
    },
    getById(db, id) {
       return db

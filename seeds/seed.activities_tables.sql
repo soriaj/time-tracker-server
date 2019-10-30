@@ -4,10 +4,8 @@ TRUNCATE activities_users, activities RESTART IDENTITY CASCADE;
 
 INSERT INTO activities_users (user_name, full_name, password)
 VALUES
-   -- ('javier', 'Javier Soria', 'Password1!'),
    ('javier', 'Javier Soria', '$2a$12$OA/Ow/k5FmGchOE5A9nLReDHk4rk/MZghl72yAbyoxOCUTeOXbnWS'),
-   ('user1', 'User 01', 'Password1!'),
-   ('user2', 'User 02', 'Password1!');
+   ('user1', 'User 01', '$2a$12$2QAjF4YY4ptfkzs5oR3KSeCLxZHKtX6B./hKJdtqWED2gXXSEmBG6');
 
 INSERT INTO activities (summary, company, customer_name, description, author_id)
 VALUES
@@ -30,7 +28,7 @@ VALUES
       'Energy Inc',
       'John Doe',
       'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus, voluptate? Necessitatibus, reiciendis? Cupiditate totam laborum esse animi ratione ipsa dignissimos laboriosam eos similique cumque. Est nostrum esse porro id quaerat.',
-      3
+      2
    ),
    (
       'Activty 4',
@@ -44,7 +42,7 @@ VALUES
       'eCorp',
       'Mr. Robot',
       'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non. Adipisci, pariatur. Molestiae, libero esse hic adipisci autem neque?',
-      3
+      2
    ),
    (
       'Activty 6',
