@@ -72,39 +72,11 @@ function makeActivitiesArray(users) {
          date: new Date('2029-01-22T16:28:32.615Z').toISOString(),
          author_id: users[0].id
       }
-      // {
-      //    id: '8e75ca8d-227f-470f-a7ea-801b706335cf',
-      //    summary: "Activty 5",
-      //    company: "eCorp",
-      //    customer_name: "Victor",
-      //    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non. Adipisci, pariatur. Molestiae, libero esse hic adipisci autem neque?",
-      //    date: new Date('2029-01-22T16:28:32.615Z'),
-      //    author_id: users[2].id
-      // },
-      // {
-      //    id: '8e75ca8d-227f-470f-a7ea-801b706335cf',
-      //    summary: "Activty 6",
-      //    company: "Awesome Deals",
-      //    customer_name: "Jane Doe",
-      //    description: "Beef ribs alcatra ground round prosciutto landjaeger strip steak leberkas doner spare ribs andouille filet mignon venison ham hock ham ball tip. T-bone buffalo boudin shankle short loin picanha bacon strip steak.",
-      //    date: new Date('2029-01-22T16:28:32.615Z'),
-      //    author_id: users[0].id
-      // },
-      // {
-      //    id: '657f4aae-22ce-40ce-9dc2-b6595cbd7386',
-      //    summary: "Activty 7",
-      //    company: "Awesome Deals",
-      //    customer_name: "Jane Doe",
-      //    description: "Ribeye kevin pig, spare ribs drumstick jowl short ribs alcatra burgdoggen meatball buffalo biltong brisket.",
-      //    date: new Date('2029-01-22T16:28:32.615Z'),
-      //    author_id: users[1].id
-      // }
    ]
 }
 
 function makeExpectedActivity(users, activity) {
    const author = users.find(user => user.id === activity.author_id)
-   // console.log(author)
    return {
       id: activity.id,
       summary: activity.summary,
@@ -189,12 +161,6 @@ function seedMaliciousActivity(db, user, activity) {
          .insert([activity])
       )
 }
-
-// BASIC AUTH
-// function makeAuthHeader(user) {
-//    const token = Buffer.from(`${user.user_name}:${user.password}`).toString('base64')
-//    return `Basic ${token}`
-// }
 
 // JWT AUTH
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {

@@ -331,6 +331,4 @@ describe('Activities Endpoints', () => {
          })
       })
    })
-
-// END OF TESTS
 })

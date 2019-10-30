@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken')
 const app = require('../src/app')
 const helpers = require('./test-helpers')
 const setTZ = require('set-tz')
-// setTZ('UTC')
 
 describe('Activities Endpoints', () => {
    let db
@@ -71,7 +70,7 @@ describe('Activities Endpoints', () => {
             password: testUser.password,
          }
          const expectedToken = jwt.sign(
-            { user_id: testUser.id }, // payload
+            { user_id: testUser.id },
             process.env.JWT_SECRET,
             {
             subject: testUser.user_name,
@@ -85,10 +84,5 @@ describe('Activities Endpoints', () => {
                authToken: expectedToken,
             })
          })
-
-      //END POST /API/AUTH/LOGIN TEST
    })
-
-
-//END OF FILE
 })

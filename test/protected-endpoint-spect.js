@@ -2,7 +2,6 @@ const knex = require('knex')
 const app = require('../src/app')
 const helpers = require('./test-helpers')
 const setTZ = require('set-tz')
-// setTZ('UTC')
 
 describe('Protected Activities Endpoints', () => {
    let db
@@ -59,9 +58,5 @@ describe('Protected Activities Endpoints', () => {
          })
 
       })
-
-
    })
-
-//END OF FILE
 })

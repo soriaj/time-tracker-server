@@ -1,7 +1,6 @@
 const express = require('express')
 const path = require('path')
 const ActivitiesService = require('./activities-service')
-// const { requireAuth } = require('../middleware/basic-auth')
 const { requireAuth } = require('../middleware/jwt-auth')
 
 const activitiesRouter = express.Router()
@@ -21,7 +20,6 @@ activitiesRouter
    .post(requireAuth, bodyParser, (req, res, next) => {
       const { summary, company, customer_name, description } = req.body;
       const newActivity = { summary, company, customer_name, description }
-      console.log(newActivity)
       const knexInstance = req.app.get('db')
 
       for(const [key, value] of Object.entries(newActivity))
@@ -30,7 +28,6 @@ activitiesRouter
          }
       
       newActivity.author_id = req.user.id
-      console.log(newActivity)
       ActivitiesService.insertActivity(knexInstance, newActivity)
          .then(activity => {
             res.status(201)
